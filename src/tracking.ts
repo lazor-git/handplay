@@ -20,9 +20,10 @@ export class Tracker {
   private landmarker: HandLandmarker | null = null;
 
   async init(): Promise<void> {
-    const vision = await FilesetResolver.forVisionTasks('/wasm');
+    const base = import.meta.env.BASE_URL;
+    const vision = await FilesetResolver.forVisionTasks(base + 'wasm');
     this.landmarker = await HandLandmarker.createFromOptions(vision, {
-      baseOptions: { modelAssetPath: '/hand_landmarker.task', delegate: 'GPU' },
+      baseOptions: { modelAssetPath: import.meta.env.BASE_URL + 'hand_landmarker.task', delegate: 'GPU' },
       runningMode: 'VIDEO',
       numHands: 2,
       minHandDetectionConfidence: 0.3,
