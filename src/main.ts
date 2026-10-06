@@ -74,6 +74,9 @@ sizeSlider.addEventListener('input', () => {
   strip.sizeScale = parseFloat(sizeSlider.value);
 });
 
+const startScreen = document.getElementById('startScreen') as HTMLDivElement;
+const startBtn = document.getElementById('startBtn') as HTMLButtonElement;
+
 async function boot(): Promise<void> {
   try {
     status.textContent = 'camera…';
@@ -85,11 +88,19 @@ async function boot(): Promise<void> {
     canvas.height = video.videoHeight;
     drawCanvas.width = video.videoWidth;
     drawCanvas.height = video.videoHeight;
+    startScreen.style.display = 'none';
     requestAnimationFrame(loop);
   } catch (e) {
-    status.textContent = `error: ${e}`;
+    status.textContent = `error: ${e instanceof Error ? e.message : String(e)}`;
+    startBtn.textContent = 'RETRY';
+    startScreen.style.display = 'flex';
   }
 }
+
+startBtn.addEventListener('click', () => {
+  startScreen.style.display = 'none';
+
+});
 
 const t0 = performance.now();
 
